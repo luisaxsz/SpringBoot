@@ -56,3 +56,6 @@ ProjetoCarros/.classpath
 ProjetoCarros/.project
 ProjetoCarros/mvnw
 ProjetoCarros/mvnw.cmd
+Carros/bin/.project
+Carros/bin/mvnw
+*.cmd
