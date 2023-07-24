@@ -4,7 +4,7 @@
 .metadata/.plugins/org.eclipse.core.resources/.history/23/d00d1ecf5927001e109eed357e2f1cf2
 *.prefs
 *.index
-*.xml
+.xml
 .metadata/.plugins/org.eclipse.core.resources/.projects/.org.eclipse.egit.core.cmp/.location
 .metadata/.plugins/org.eclipse.core.resources/.projects/Carros/.location
 *.dat
