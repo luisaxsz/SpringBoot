@@ -44,3 +44,4 @@ Carros/.classpath
 *.class
 *.MF
 Carros/.project
+Carros/target/classes/.reloadtrigger
