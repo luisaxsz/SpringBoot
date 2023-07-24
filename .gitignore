@@ -45,3 +45,10 @@ Carros/.classpath
 *.MF
 Carros/.project
 Carros/target/classes/.reloadtrigger
+AulasSpringBoot/settings.gradle
+AulasSpringBoot/gradlew.bat
+*.gradle
+*.jar
+AulasSpringBoot/.classpath
+AulasSpringBoot/.project
+AulasSpringBoot/gradlew

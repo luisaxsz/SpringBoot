@@ -1,4 +1,4 @@
-package com.example.Carros.api;
+package com.example.demo.api;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
