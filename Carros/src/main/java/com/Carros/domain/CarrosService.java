@@ -8,37 +8,56 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import com.Carros.domain.dto.CarroDTO;
+
 @Service
 public class CarrosService {
 	
 	@Autowired
 	private CarroRepository rep;
 	
-	public Iterable<Carro> getCarrosDB(){
-		return rep.findAll();
+	public Iterable<CarroDTO> getCarrosDB(){
+		List<Carro> carros = rep.findAll();
+		List <CarroDTO> list = new ArrayList<>();
+		
+		for (Carro c : carros) {
+			list.add(new CarroDTO(c));
+		}
+		return list;
 	}
 	
-	public Optional<Carro> getCarroById(Long id) {
-		return rep.findById(id);
+	public Optional<CarroDTO> getCarroById(Long id) {
+		Optional <Carro> carro = rep.findById(id);
+		if(carro.isPresent()) {
+			return Optional.of(new CarroDTO(carro.get()));
+		}else {
+			return null;
+		}
 	}
 	
-	public List<Carro> getCarroByTipo(String tipo) {
-		return rep.findByTipo(tipo);
+	public List<CarroDTO> getCarroByTipo(String tipo) {
+		List<Carro> carros = rep.findByTipo(tipo);
+		List <CarroDTO> list = new ArrayList<>();
+		
+		for (Carro c : carros) {
+			list.add(new CarroDTO(c));
+		}
+		return list;
 	}
 	
 	public Carro insert(Carro carro) {		
 		return rep.save(carro);	
 	}
 	
-	public Carro update(Carro carro, Long id ) {
+	public CarroDTO update(CarroDTO carro, Long id ) {
 		Assert.notNull(id,"Não foi possivel atualizar o registro");
 		
 		//Buscar carro no banco de dados
-		Optional <Carro> optional = getCarroById(id);
+		Optional<CarroDTO> optional = getCarroById(id);
 		
 		//Verifica se carro existe no bd
 		if(optional.isPresent()) {
-			Carro db = optional.get();
+			CarroDTO db = optional.get();
 			//Coopia as propriedades
 			db.setNome(carro.getNome());
 			db.setTipo(carro.getTipo());
@@ -55,7 +74,7 @@ public class CarrosService {
 	}
 	
 	public void delete(Long id) {
-		Optional <Carro> carro = getCarroById(id);
+		Optional <CarroDTO> carro = getCarroById(id);
 		if(carro.isPresent()) {
 			rep.deleteById(id);
 		} 
@@ -64,9 +83,9 @@ public class CarrosService {
 	public List<Carro> getCarrosFake(){
 		ArrayList<Carro> carros = new ArrayList<>();
 		
-		carros.add(new Carro(1L, "Fusca"));
-		carros.add(new Carro(2L, "Brasilia"));
-		carros.add(new Carro(3L, "Chevette"));
+		//carros.add(new Carro(1L, "Fusca"));
+		//carros.add(new Carro(2L, "Brasilia"));
+		//carros.add(new Carro(3L, "Chevette"));
 		
 		return carros;
 	}

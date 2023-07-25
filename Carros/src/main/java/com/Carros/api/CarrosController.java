@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.Carros.domain.Carro;
 import com.Carros.domain.CarrosService;
+import com.Carros.domain.dto.CarroDTO;
 
 @Controller
 @RestController
@@ -29,13 +30,13 @@ public class CarrosController {
 	private CarrosService service;
 	
 	@GetMapping()
-	public ResponseEntity<Iterable<Carro>>  get() {
+	public ResponseEntity<Iterable<CarroDTO>>  get() {
 		return ResponseEntity.ok(service.getCarrosDB());
 	}
 	
 	@GetMapping("{id}")
-	public ResponseEntity<Carro>get(@PathVariable("id") Long id){
-		Optional<Carro> carro = service.getCarroById(id);
+	public ResponseEntity<CarroDTO>get(@PathVariable("id") Long id){
+		Optional<CarroDTO> carro = service.getCarroById(id);
 		/*
 		if(carro.isPresent()) {
 			return ResponseEntity.ok(carro.get());
@@ -51,7 +52,7 @@ public class CarrosController {
 	
 	@GetMapping("/tipo/{tipo}")
 	public ResponseEntity get(@PathVariable("tipo") String tipo){
-		List<Carro> carros = service.getCarroByTipo(tipo);
+		List<CarroDTO> carros = service.getCarroByTipo(tipo);
 		if (carros.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		}else {
@@ -67,8 +68,8 @@ public class CarrosController {
 	}
 	
 	@PutMapping("/{id}")
-	public String put(@PathVariable ("id") Long id, @RequestBody Carro carro) {
-		Carro c = service.update(carro, id);
+	public String put(@PathVariable ("id") Long id, @RequestBody CarroDTO carro) {
+		CarroDTO c = service.update(carro, id);
 		
 		return "Carro atualizado com suscesso: " + c.getId();
 	}
