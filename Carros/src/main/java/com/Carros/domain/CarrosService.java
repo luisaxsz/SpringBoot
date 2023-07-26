@@ -16,7 +16,7 @@ public class CarrosService {
 	@Autowired
 	private CarroRepository rep;
 	
-	public Iterable<CarroDTO> getCarrosDB(){
+	public List<CarroDTO> getCarrosDB(){
 		List<Carro> carros = rep.findAll();
 		List <CarroDTO> list = new ArrayList<>();
 		
