@@ -1,13 +1,4 @@
-create table carro
-    (id bigint not null auto_increment,
-    nome varchar(255),
-    descricao varchar(255),
-    url_foto varchar(255),
-    url_video varchar(255),
-    latitude varchar(255),
-    longitude varchar(255),
-    tipo varchar(255), primary key (id) );
-    
+
 insert into carro (nome,descricao,url_foto,url_video,latitude,longitude,tipo) VALUES('Tucker 1948','Descrição Tucker 1948','http://www.livroandroid.com.br/livro/carros/classicos/Tucker.png','http://www.livroandroid.com.br/livro/carros/classicos/tucker.mp4','-23.564224','-46.653156','classicos');
 insert into carro (nome,descricao,url_foto,url_video,latitude,longitude,tipo) VALUES('Chevrolet Corvette','Descrição Chevrolet Corvette','http://www.livroandroid.com.br/livro/carros/classicos/Chevrolet_Corvette.png','http://www.livroandroid.com.br/livro/carros/classicos/corvette.mp4','-23.564224','-46.653156','classicos');
 insert into carro (nome,descricao,url_foto,url_video,latitude,longitude,tipo) VALUES('Chevrolet Impala Coupe','Descrição Chevrolet Impala Coupe','http://www.livroandroid.com.br/livro/carros/classicos/Chevrolet_Impala_Coupe.png','http://www.livroandroid.com.br/livro/carros/classicos/chevrolet_impala.mp4','-23.564224','-46.653156','classicos');
