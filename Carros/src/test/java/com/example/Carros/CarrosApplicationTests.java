@@ -2,7 +2,9 @@ package com.example.Carros;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,10 +42,8 @@ public class CarrosApplicationTests {
 		assertNotNull(id);
 		
 		//Buscar Objeto
-		Optional <CarroDTO> op = service.getCarroById(id);
-		assertTrue(op.isPresent());
-		
-		c = op.get();
+		c = service.getCarroById(id);
+		assertNotNull(c);
 		
 		assertEquals("Ferrari", c.getNome());
 		assertEquals("Luxo", c.getTipo());
@@ -52,7 +52,12 @@ public class CarrosApplicationTests {
 		service.delete(id);
 		
 		//Verificar se deletou
-		//assertFalse(service.getCarroById(id).isPresent());
+		try {
+			assertNull(service.getCarroById(id));
+			fail("O carro não foi excluido");
+		}catch (Exception e) {
+			//ok
+		}
 	}
 	
 	@Test
@@ -65,12 +70,10 @@ public class CarrosApplicationTests {
 	
 	@Test
 	public void get() {
-		Optional<CarroDTO> carro = service.getCarroById(11L);
-		assertTrue(carro.isPresent());
-		
-		CarroDTO c = carro.get();
-		
-		assertEquals("Ferrari FF", c.getNome());
+		CarroDTO carro = service.getCarroById(11L);
+		assertNotNull(carro);
+			
+		assertEquals("Ferrari FF", carro.getNome());
 		
 	}
 	

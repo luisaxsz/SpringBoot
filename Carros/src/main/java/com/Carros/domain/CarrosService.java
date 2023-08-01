@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -26,14 +27,14 @@ public class CarrosService {
 		return list;
 	}
 
-	public Optional<CarroDTO> getCarroById(Long id) {
+	public CarroDTO getCarroById(Long id) {
 		Optional<Carro> carro = rep.findById(id);
 		if (carro.isPresent()) {
 			// Converte carroDTO para optional
-			return Optional.of(CarroDTO.create(carro.get()));
-		} else {
-			return Optional.empty();
+			return CarroDTO.create(carro.get());
 		}
+		
+		throw new ObjectNotFoundException("Objeto não encontrado", carro);
 	}
 
 	public List<CarroDTO> getCarroByTipo(String tipo) {

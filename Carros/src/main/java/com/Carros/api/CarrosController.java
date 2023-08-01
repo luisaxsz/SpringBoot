@@ -36,14 +36,10 @@ public class CarrosController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<CarroDTO> get(@PathVariable("id") Long id) {
-		Optional<CarroDTO> carro = service.getCarroById(id);
+	public ResponseEntity<?> get(@PathVariable("id") Long id) {
+		CarroDTO carro = service.getCarroById(id);
 
-		if (carro.isPresent()) {
-			return ResponseEntity.ok(carro.get());
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return ResponseEntity.ok(carro);
 
 		// lambdas
 		// return carro.map(c ->
@@ -86,11 +82,8 @@ public class CarrosController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-		if(service.getCarroById(id).isPresent()) {
-			service.delete(id);
-			return ResponseEntity.ok().build();
-		}
-		return ResponseEntity.notFound().build();
+		service.delete(id);
+		return ResponseEntity.ok().build();
 	}
 
 }
