@@ -2,7 +2,6 @@ package com.Carros.api;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -59,9 +58,9 @@ public class CarrosController {
 
 	@PostMapping
 	public ResponseEntity<?> post(@RequestBody Carro carro) {
-			CarroDTO c = service.insert(carro);
-			URI location = getUri(c.getId());
-			return ResponseEntity.created(location).build();
+		CarroDTO c = service.insert(carro);
+		URI location = getUri(c.getId());
+		return ResponseEntity.created(location).build();
 	}
 
 	// Montando url até o caminho /id para recurso ->
@@ -85,5 +84,4 @@ public class CarrosController {
 		service.delete(id);
 		return ResponseEntity.ok().build();
 	}
-
 }
