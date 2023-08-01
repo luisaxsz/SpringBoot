@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,74 +26,71 @@ import com.Carros.domain.dto.CarroDTO;
 @RequestMapping("/api/v1/carros")
 
 public class CarrosController {
-	
+
 	@Autowired
 	private CarrosService service;
-	
+
 	@GetMapping()
-	public ResponseEntity<Iterable<CarroDTO>>  get() {
+	public ResponseEntity<Iterable<CarroDTO>> get() {
 		return ResponseEntity.ok(service.getCarrosDB());
 	}
-	
-	@GetMapping("{id}")
-	public ResponseEntity<CarroDTO>get(@PathVariable("id") Long id){
+
+	@GetMapping("/{id}")
+	public ResponseEntity<CarroDTO> get(@PathVariable("id") Long id) {
 		Optional<CarroDTO> carro = service.getCarroById(id);
-		/*
-		if(carro.isPresent()) {
+
+		if (carro.isPresent()) {
 			return ResponseEntity.ok(carro.get());
-		}else {
+		} else {
 			return ResponseEntity.notFound().build();
-		}*/
-		
-		//lambdas
-		return carro.map(c -> ResponseEntity.ok(c))
-			.orElse(ResponseEntity.notFound().build());
-		
+		}
+
+		// lambdas
+		// return carro.map(c ->
+		// ResponseEntity.ok(c)).orElse(ResponseEntity.notFound().build());
+
 	}
-	
+
 	@GetMapping("/tipo/{tipo}")
-	public ResponseEntity get(@PathVariable("tipo") String tipo){
+	public ResponseEntity<?> get(@PathVariable("tipo") String tipo) {
 		List<CarroDTO> carros = service.getCarroByTipo(tipo);
 		if (carros.isEmpty()) {
 			return ResponseEntity.noContent().build();
-		}else {
+		} else {
 			return ResponseEntity.ok(carros);
 		}
 	}
-	
-	@PostMapping()
-	public ResponseEntity post(@RequestBody Carro carro) {
-		try {
+
+	@PostMapping
+	public ResponseEntity<?> post(@RequestBody Carro carro) {
 			CarroDTO c = service.insert(carro);
 			URI location = getUri(c.getId());
 			return ResponseEntity.created(location).build();
-		}catch (Exception e){
-			return ResponseEntity.badRequest().build();
-		}
 	}
-	
-	//Montando url até o caminho /id para recurso -> 
+
+	// Montando url até o caminho /id para recurso ->
 	private URI getUri(Long id) {
 		return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
 	}
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity put(@PathVariable ("id") Long id, @RequestBody Carro carro) {
+	public ResponseEntity<?> put(@PathVariable("id") Long id, @RequestBody Carro carro) {
 		carro.setId(id);
 		CarroDTO c = service.update(carro, id);
-		if(c != null) {
-			return ResponseEntity.ok(c);			
-		}else {
+		if (c != null) {
+			return ResponseEntity.ok(c);
+		} else {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
+
 	@DeleteMapping("/{id}")
-	public ResponseEntity delete(@PathVariable("id") Long id) {
-		if(service.delete(id) == true) {
+	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+		if(service.getCarroById(id).isPresent()) {
+			service.delete(id);
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();
 	}
-	
+
 }

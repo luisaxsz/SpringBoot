@@ -14,7 +14,5 @@ import com.Carros.domain.dto.CarroDTO;
 public interface CarroRepository extends JpaRepository<Carro,Long> {
 
 	List<Carro> findByTipo(String tipo);
-
-	void save(CarroDTO db);
 	
 }
