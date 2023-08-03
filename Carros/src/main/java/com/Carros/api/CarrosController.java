@@ -2,6 +2,7 @@ package com.Carros.api;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.Carros.domain.Carro;
 import com.Carros.domain.CarrosService;
 import com.Carros.domain.dto.CarroDTO;
+
 
 @Controller
 @RestController
@@ -83,5 +85,7 @@ public class CarrosController {
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 		service.delete(id);
 		return ResponseEntity.ok().build();
+
+		
 	}
 }
