@@ -11,13 +11,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.User.UserBuilder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -31,24 +27,20 @@ public class SecurityConfig {
 	private UserDetailsService userDetailService;
 
 	@Bean 
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-		 http
-         .authorizeHttpRequests((authz) -> authz
-        	.requestMatchers(HttpMethod.POST, "/api/v1/carros").hasRole("ADMIN")
-             .anyRequest().authenticated()
-         ).csrf().disable()
-         .httpBasic(withDefaults());
+	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+        http
+                .authorizeHttpRequests((authz) -> authz
+                .requestMatchers(HttpMethod.POST, "/api/v1/carros").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                ).csrf(withDefaults())
+                .httpBasic(withDefaults());
     return http.build();
 	}
 	
-    protected void userDetailsService(AuthenticationManagerBuilder auth) {
-		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    protected void userDetailsService(AuthenticationManagerBuilder auth) throws Exception{
+		auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
 
-		try {
-			auth.userDetailsService(userDetailService).passwordEncoder(encoder);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 		
 		/*
 		UserBuilder users = User.withDefaultPasswordEncoder();
@@ -66,10 +58,8 @@ public class SecurityConfig {
         */
     }
 
-	/*
-	@Bean
-	public WebSecurityCustomizer webSecurityCustomizer() {
-
-	}
-	*/
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+            return new BCryptPasswordEncoder();    
+    }
 }
