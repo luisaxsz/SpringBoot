@@ -30,16 +30,16 @@ public class SecurityConfig {
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests((authz) -> authz
-                .requestMatchers(HttpMethod.POST, "/api/v1/carros").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")
                 .anyRequest().authenticated()
-                ).csrf(withDefaults())
+                ).csrf().disable()
                 .httpBasic(withDefaults());
     return http.build();
 	}
 	
     protected void userDetailsService(AuthenticationManagerBuilder auth) throws Exception{
 		auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
-
 
 		
 		/*
