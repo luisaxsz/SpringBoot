@@ -35,7 +35,7 @@ public class CarrosAPITests {
 	
 	private ResponseEntity<CarroDTO>  getCarros(String url){
 		//Passa endereço e Objeto que quer pegar resposta
-		return rest.getForEntity(url, CarroDTO.class);
+		return rest.withBasicAuth("user", "123").getForEntity(url, CarroDTO.class);
 	}
 	
 	private ResponseEntity<List<CarroDTO>>  getCarros2(String url){
@@ -53,7 +53,7 @@ public class CarrosAPITests {
 		//Insert 
 		//Retorna uma responsta em response entity
 		//Endereço que faz post e objeto
-		ResponseEntity response = rest.postForEntity("/api/v1/carro", carro, null);
+		ResponseEntity response = rest.withBasicAuth("admin", "123").postForEntity("/api/v1/carro", carro, null);
 		
 		//Verifica se criou
 		assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -67,7 +67,7 @@ public class CarrosAPITests {
 		assertEquals("Espotivo", c.getNome());
 		
 		//Deletar objeto
-		rest.delete(location);
+		rest.withBasicAuth("admin", "123").delete(location);
 		
 		//Verfica se foi deletado
 		assertEquals(HttpStatus.NOT_FOUND,getCarros(location).getStatusCode());
