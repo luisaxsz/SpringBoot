@@ -62,3 +62,6 @@ Carros/bin/mvnw
 Carros/.factorypath
 Carros/target/classes/springboot-api-carros-firebase-adminsdk-ay3wj-e21fdaa89d.json
 Carros/src/main/resources/springboot-api-carros-firebase-adminsdk-ay3wj-e21fdaa89d.json
+Carros/target/classes/serviceAccontKeyCarros.json
+Carros/target/classes/serviceAccountKey.json
+Carros/src/main/resources/serviceAccountKey.json
