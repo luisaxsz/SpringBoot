@@ -4,20 +4,14 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.Carros.domain.upload.FirebaseStorageService;
-import com.Carros.domain.upload.UploadInput;
-import com.Carros.domain.upload.UploadOutPut;
-
 @RestController
 @RequestMapping("api/v1/upload")
-@ComponentScan(basePackages = {"com.Carros"})
 public class UploadController {
 	@Autowired
 	@Qualifier("firebaseStorageService")

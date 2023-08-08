@@ -1,4 +1,4 @@
-package com.Carros.domain.upload;
+package com.Carros.api.upload;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,24 +16,20 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.StorageClient;
 
-import jakarta.transaction.Transactional;
 
 @Service(value = "firebaseStorageService")
 public class FirebaseStorageService {
-
-	@Transactional
-	private void init() throws IOException {
+	@PostConstruct
+	private void initialize() throws IOException {
 		// Verifica se arquivo de conf está vazia
 		if (FirebaseApp.getApps().isEmpty()) {
 			FileInputStream serviceAccount =
 
-					new FileInputStream("/Carros/src/main/resources/serviceAccountKey.json");
+					new FileInputStream("target/classes/serviceAccountKey.json");
 
 
 			System.out.println(serviceAccount);
-
 			System.out.println(serviceAccount);
-
 			if (serviceAccount != null) {
 				FirebaseOptions options = new FirebaseOptions.Builder()
 

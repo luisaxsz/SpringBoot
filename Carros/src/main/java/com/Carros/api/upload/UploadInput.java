@@ -1,4 +1,4 @@
-package com.Carros.domain.upload;
+package com.Carros.api.upload;
 
 import lombok.Data;
 
