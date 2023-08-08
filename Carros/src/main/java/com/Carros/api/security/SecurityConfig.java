@@ -30,8 +30,8 @@ public class SecurityConfig {
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests((authz) -> authz
-                //.requestMatchers(HttpMethod.POST).hasRole("ADMIN")
-                //.requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")
                 .anyRequest().permitAll()
                 ).csrf().disable()
                 .httpBasic(withDefaults());
