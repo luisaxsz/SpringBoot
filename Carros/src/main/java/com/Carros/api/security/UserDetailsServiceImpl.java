@@ -13,6 +13,7 @@ import com.Carros.domain.UserRepository;
 
 //Identificador
 @Service(value = "userDetailService")
+
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
