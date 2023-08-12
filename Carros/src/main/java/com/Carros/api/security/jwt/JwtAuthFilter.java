@@ -18,56 +18,60 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
 ;
 
-@Component 
+@Component
 public class JwtAuthFilter extends BasicAuthenticationFilter {
-    private static Logger logger = LoggerFactory.getLogger(JwtAuthFilter.class);
-	
+	private static Logger logger = LoggerFactory.getLogger(JwtAuthFilter.class);
+
 	private UserDetailsService userDetailsService;
-	 public JwtAuthFilter(AuthenticationManager authenticationManager,UserDetailsService userDetailsService) {
-	        super(authenticationManager);
-	        this.userDetailsService = userDetailsService;
-	    }
+	
+
+	public JwtAuthFilter(AuthenticationManager authenticationManager,UserDetailsService userDetailsService) {
+        super(authenticationManager);
+        this.userDetailsService = userDetailsService;
+    }
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		String token = request.getHeader("Authorization");
-		
+
 		if (StringUtils.isEmpty(token) || !token.startsWith("Bearer ")) {
-            // Não informou o authorization
-            filterChain.doFilter(request, response);
-        }
+			// Não informou o authorization
+			filterChain.doFilter(request, response);
+		}
 
-        try {
+		try {
 
-            if(! JwtUtil.isTokenValid(token)) {
-                throw new AccessDeniedException("Acesso negado.");
-            }
+			if (!JwtUtil.isTokenValid(token)) {
+				throw new AccessDeniedException("Acesso negado.");
+			}
 
-            String login = JwtUtil.getLogin(token);
+			String login = JwtUtil.getLogin(token);
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(login);
+			UserDetails userDetails = userDetailsService.loadUserByUsername(login);
 
-            List<GrantedAuthority> authorities = JwtUtil.getRoles(token);
+			List<GrantedAuthority> authorities = JwtUtil.getRoles(token);
 
-            //var authorities = ((UserDetails) userDetails).getAuthorities();
+			// var authorities = ((UserDetails) userDetails).getAuthorities();
 
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null,
+					authorities);
 
-            // Salva o Authentication no contexto do Spring
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            filterChain.doFilter(request, response);
+			// Salva o Authentication no contexto do Spring
+			SecurityContextHolder.getContext().setAuthentication(auth);
+			filterChain.doFilter(request, response);
 
-        } catch (RuntimeException ex) {
-            logger.error("Authentication error: " + ex.getMessage(),ex);
+		} catch (RuntimeException ex) {
+			logger.error("Authentication error: " + ex.getMessage(), ex);
 
-            throw ex;
-        }
-    }
+			throw ex;
+		}
+	}
 
 }

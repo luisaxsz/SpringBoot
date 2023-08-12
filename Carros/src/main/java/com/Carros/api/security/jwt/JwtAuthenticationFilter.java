@@ -21,12 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.io.IOException;
 
 
-public class JwtAthenticationFilter  extends UsernamePasswordAuthenticationFilter{
+public class JwtAuthenticationFilter  extends UsernamePasswordAuthenticationFilter{
 	public static final String AUTH_URL = "/api/v1/login";
-
+	
     private final AuthenticationManager authenticationManager;
 
-    public JwtAthenticationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
 
         // api/authenticate

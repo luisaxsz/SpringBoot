@@ -24,14 +24,15 @@ import com.Carros.domain.dto.CarroDTO;
 
 
 @Controller
-@RestController
-@RequestMapping("/api/v1/carros")
+@RestController // Caracteristica do controller
+@RequestMapping("/api/v1/carros") // Nome do recurso
 
 public class CarrosController {
 
 	@Autowired
 	private CarrosService service;
-
+	
+	//Representação do recurso -> mensagem de retorno
 	@GetMapping()
 	public ResponseEntity<Iterable<CarroDTO>> get() {
 		return ResponseEntity.ok(service.getCarrosDB());

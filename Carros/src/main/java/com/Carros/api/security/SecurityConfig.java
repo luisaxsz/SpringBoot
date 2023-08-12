@@ -16,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import com.Carros.api.security.jwt.JwtAthenticationFilter;
+import com.Carros.api.security.jwt.JwtAuthenticationFilter;
 import com.Carros.api.security.jwt.JwtAuthFilter;
 import com.Carros.api.security.jwt.handler.AccessDeniedHandler;
 import com.Carros.api.security.jwt.handler.UnauthorizedHandler;
@@ -37,31 +37,39 @@ public class SecurityConfig {
 	@Autowired
 	private AccessDeniedHandler accessDeniedHandler;
 
+	// Nova versão -> Substitui a instância do AuthenticationManager
+	@Bean
+	public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder,
+			UserDetailsService userDetailsService) throws Exception {
+		return http.getSharedObject(AuthenticationManagerBuilder.class).build();
+	}
+
 	@Bean
 	protected void filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((authz) -> authz.anyRequest().authenticated()
 				.requestMatchers(HttpMethod.GET, "api/v1/login").permitAll()).csrf().disable()
-				.addFilterAfter(new JwtAthenticationFilter(null), JwtAthenticationFilter.class)
-				.addFilterAfter(new JwtAuthFilter(null, null), JwtAuthFilter.class).exceptionHandling()
-				.accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(unauthorizedHandler).and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.addFilterBefore(new JwtAuthenticationFilter(authenticationManager(null)), JwtAuthenticationFilter.class)
+				.addFilterBefore(new JwtAuthFilter(authenticationManager(null), userDetailService), JwtAuthFilter.class)
+				.exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+				.authenticationEntryPoint(unauthorizedHandler).and().sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 	}
 
 	protected void userDetailsService(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
-		
+
 		/*
-		UserBuilder users = User.withDefaultPasswordEncoder();
-		UserDetails admin = users.username("admin").password("admin").roles("ADMIN").build();
-		UserDetails user = users.username("user").password("user").roles("USER").build();
-		return new InMemoryUserDetailsManager(admin, user);
-		*/
+		 * UserBuilder users = User.withDefaultPasswordEncoder(); UserDetails admin =
+		 * users.username("admin").password("admin").roles("ADMIN").build(); UserDetails
+		 * user = users.username("user").password("user").roles("USER").build(); return
+		 * new InMemoryUserDetailsManager(admin, user);
+		 */
 
 	}
 
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	private PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
