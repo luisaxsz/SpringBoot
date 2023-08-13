@@ -29,7 +29,6 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
 	private static Logger logger = LoggerFactory.getLogger(JwtAuthFilter.class);
 
 	private UserDetailsService userDetailsService;
-	
 
 	public JwtAuthFilter(AuthenticationManager authenticationManager,UserDetailsService userDetailsService) {
         super(authenticationManager);

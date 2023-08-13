@@ -1,19 +1,24 @@
 package com.Carros.api.security;
 
 import org.springframework.context.annotation.Bean;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.Carros.api.security.jwt.JwtAuthenticationFilter;
@@ -37,23 +42,27 @@ public class SecurityConfig {
 	@Autowired
 	private AccessDeniedHandler accessDeniedHandler;
 
-	// Nova versão -> Substitui a instância do AuthenticationManager
 	@Bean
-	public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder,
-			UserDetailsService userDetailsService) throws Exception {
+	public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
 		return http.getSharedObject(AuthenticationManagerBuilder.class).build();
 	}
 
 	@Bean
-	protected void filterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests((authz) -> authz.anyRequest().authenticated()
-				.requestMatchers(HttpMethod.GET, "api/v1/login").permitAll()).csrf().disable()
-				.addFilterBefore(new JwtAuthenticationFilter(authenticationManager(null)), JwtAuthenticationFilter.class)
-				.addFilterBefore(new JwtAuthFilter(authenticationManager(null), userDetailService), JwtAuthFilter.class)
-				.exceptionHandling().accessDeniedHandler(accessDeniedHandler)
-				.authenticationEntryPoint(unauthorizedHandler).and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		AuthenticationManager authManager = authenticationManager(http);
+		http.csrf().disable();
 
+		http.authorizeHttpRequests((authz) -> authz
+				.anyRequest().authenticated()
+				.requestMatchers(HttpMethod.GET, "api/v1/login").permitAll())
+				.exceptionHandling(handling -> handling.accessDeniedHandler(accessDeniedHandler)
+						.authenticationEntryPoint(unauthorizedHandler))
+				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+		http.addFilter(new JwtAuthenticationFilter(authManager))
+				.addFilter(new JwtAuthFilter(authManager, userDetailService));
+		
+		return http.build();
 	}
 
 	protected void userDetailsService(AuthenticationManagerBuilder auth) throws Exception {
@@ -69,7 +78,7 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	private PasswordEncoder passwordEncoder() {
+	protected PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
