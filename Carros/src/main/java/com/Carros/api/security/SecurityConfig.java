@@ -50,12 +50,13 @@ public class SecurityConfig {
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		AuthenticationManager authManager = authenticationManager(http);
-		http.csrf().disable();
-
 		http.authorizeHttpRequests((authz) -> authz
-				.anyRequest().authenticated()
 				.requestMatchers(HttpMethod.GET, "api/v1/login").permitAll())
-				.exceptionHandling(handling -> handling.accessDeniedHandler(accessDeniedHandler)
+				.csrf().disable();
+		
+		http.authorizeHttpRequests((authz) -> authz.anyRequest().authenticated());
+
+		http.exceptionHandling(handling -> handling.accessDeniedHandler(accessDeniedHandler)
 						.authenticationEntryPoint(unauthorizedHandler))
 				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
