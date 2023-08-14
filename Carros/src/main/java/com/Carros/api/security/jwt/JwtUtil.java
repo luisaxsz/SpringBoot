@@ -21,7 +21,7 @@ public class JwtUtil {
 	// Chave com algoritmo HS512
 	// http://www.allkeysgenerator.com
 	private static final String JWT_SECRET = "n2r5u8x/A%D*G-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t7w!z%C*F-J@NcRf";
-
+	
 	public static Claims getClaims(String token) {
 		byte[] signingKey = JwtUtil.JWT_SECRET.getBytes();
 
@@ -57,13 +57,14 @@ public class JwtUtil {
 		}
 		return false;
 	}
-
+	// gerar token e chama lib json web token 
+	//passa usuário
 	public static String createToken(UserDetails user) {
 		List<String> roles = user.getAuthorities().stream().map(GrantedAuthority::getAuthority)
 				.collect(Collectors.toList());
 
 		byte[] signingKey = JwtUtil.JWT_SECRET.getBytes();
-
+		// data de expiração 
 		int days = 10;
 		long time = days * 24 /* horas */ * 60 /* min */ * 60 /* seg */ * 1000 /* milis */;
 		Date expiration = new Date(System.currentTimeMillis() + time);
