@@ -63,6 +63,7 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
 					authorities);
 
 			// Salva o Authentication no contexto do Spring
+			// indica se usuário está autenticado 
 			SecurityContextHolder.getContext().setAuthentication(auth);
 			filterChain.doFilter(request, response);
 
