@@ -23,6 +23,11 @@ public class UserDTO {
 		return dto;
 	}
 	
+	public static UserDTO create(User u) {
+		ModelMapper modelMapper = new ModelMapper();
+		return modelMapper.map(u, UserDTO.class);
+	}
+	
 	public String toJson() throws JsonProcessingException {
         ObjectMapper m = new ObjectMapper();
         return m.writeValueAsString(this);
