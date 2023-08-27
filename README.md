@@ -28,42 +28,41 @@ API consulta carros presentes no banco de dados e atráves dos métodos get,post
 ### Buscar todos os carros
 ``GET /api/v1/carros``
 ```json
-    {
-        "id": 1,
-        "nome": "Tucker 1948",
-        "tipo": "classicos"
-    }
+{
+  "id": 1,
+  "nome": "Tucker 1948",
+  "tipo": "classicos"
+}
 ```
 
 ### Buscar carro por ID
 ```GET /api/v1/carros/{id}```
 
-```
+```json
 {
-    "id": 6,
-    "nome": "Cadillac Eldorado",
-    "tipo": "classicos"
+  "id": 6,
+  "nome": "Cadillac Eldorado",
+  "tipo": "classicos"
 }
 ```
 
 ### Buscar carro por tipo
 ```GET /api/v1/carros/tipo/{tipo}```
-```
+```json
 {
-        "id": 1,
-        "nome": "Tucker 1948",
-        "tipo": "classicos"
-    },
-    {
-        "id": 2,
-        "nome": "Chevrolet Corvette",
-        "tipo": "classicos"
-    },
-    {
-        "id": 3,
-        "nome": "Chevrolet Impala Coupe",
-        "tipo": "classicos"
-    }
+  "id": 1,
+  "nome": "Tucker 1948",
+  "tipo": "classicos"
+},
+{
+  "id": 2,
+  "nome": "Chevrolet Corvette",
+  "tipo": "classicos"
+},
+{
+  "id": 3,
+  "nome": "Chevrolet Impala Coupe",
+  "tipo": "classicos"
 }
 ```
 
@@ -71,10 +70,10 @@ API consulta carros presentes no banco de dados e atráves dos métodos get,post
 ```PUT /api/v1/carros/{id} ```
 
 ```json
-    {
-        "nome": "Tucker 1948",
-        "tipo": "classicos"
-    }
+{
+  "nome": "Tucker 1948",
+  "tipo": "classicos"
+}
 ```
 
 * Não é permitido mudar ID apenas as informações
@@ -86,10 +85,10 @@ API consulta carros presentes no banco de dados e atráves dos métodos get,post
 
 ### Criar novo carro
 ```POST /api/v1/carros```
-```
+```json
 {
-    "nome": "Tucker 1948",
-    "tipo": "classicos" 
+  "nome": "Tucker 1948",
+  "tipo": "classicos" 
 }
 ```
 
@@ -97,11 +96,11 @@ API consulta carros presentes no banco de dados e atráves dos métodos get,post
 ### Consultar Usuários
 ```GET /api/v1/userInfo```
 
-```
+```json
 {
-    "nome": "Admin",
-    "email": "admin@gmail.com",
-    "login": "admin",
-    "token": null
+  "nome": "Admin",
+  "email": "admin@gmail.com",
+  "login": "admin",
+  "token": null
 }
 ```
