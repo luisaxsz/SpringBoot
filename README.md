@@ -7,6 +7,7 @@
 </p>
 
 # API Carros - SpringBoot
+<img alt="Static Badge" src="https://img.shields.io/badge/SpringBoot-Curso Finalizado-darkgreen">
 
 API consulta carros presentes no banco de dados e atráves dos métodos get,post, put e delete é possível acessar e modificar a API. API também possui níveis de segurança de ADMIN e USER que controlam quem poderá modificar a mesma.Esses níveis de acesso são contolodos pelo JWT token e usuarios e ROLES presentes no banco de dados.Também é possível acessar lista de usuários registrados no banco de dados e suas respectivas ROLES.
 
